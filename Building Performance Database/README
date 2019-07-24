@@ -10,3 +10,6 @@ When you benchmark your building in Portfolio Manager, one of the key metrics yo
 Thoughts:
 1. Based on the sample (11,000 commercial buildings), get the training set of the commercial building energy performance of the whole State.
 2. The trained data can be used in the energy benchmarking analysis for building owner
+
+Machine learning for estimation of building energy consumption and performance: a review:
+https://link.springer.com/article/10.1186/s40327-018-0064-7
