@@ -4,3 +4,9 @@ https://www.energy.gov/eere/buildings/about-building-performance-database
 
 Tool: https://bpd.lbl.gov/#explore
 
+Energy Use Intensity (EUI): 
+When you benchmark your building in Portfolio Manager, one of the key metrics you’ll see is energy use intensity, or EUI. Essentially, the EUI expresses a building’s energy use as a function of its size or other characteristics.
+
+Thoughts:
+1. Based on the sample (11,000 commercial buildings), get the training set of the commercial building energy performance of the whole State.
+2. The trained data can be used in the energy benchmarking analysis for building owner
