@@ -12,20 +12,35 @@
  *
  */
 
+libname prod "D:\Github\ML_SAS\eproduce";
+
 ods noproctitle;
 ods graphics / imagemap=on;
 
-proc sort data=ML.ECONSUME out=Work.preProcessedData;
+proc sort data=consume.ECONSUME out=Work.preProcessedData;
 	by country date;
 run;
-
+/* Expontential Smoothing: DAMPED TREND*/
 proc esm data=Work.preProcessedData back=0 lead=5 plot=(corr errors 
-		modelforecasts) outest=ml.econsume_dt_est outstat=ml.econsume_dt_fit 
-		outfor=ml.econsume_dt_forecast outsum=ml.econsume_dt_summary;
+		modelforecasts) 
+		outest=consume.econsume_dt_est 
+		outstat=consume.econsume_dt_fit 
+		outfor=consume.econsume_dt_forecast 
+		outsum=consume.econsume_dt_summary;
 	by country;
 	id date interval=day;
 	forecast econsume / alpha=0.05 model=damptrend transform=none;
 run;
 
-proc delete data=Work.preProcessedData;
-run;
+/*proc delete data=Work.preProcessedData;*/
+/*run;*/
+
+proc contents; run;
+
+/**/
+/*proc sgplot data=consume.econsume_dt_forecast; by country;*/
+/*  band    X=Date upper=U95 lower=L95;*/
+/*  series  X=Date Y=Forecast;*/
+/*  scatter X=Date Y=Actual;*/
+/*  refline "01jan2002"d /axis=X;*/
+/*quit;*/
