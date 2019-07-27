@@ -1,4 +1,4 @@
-pname	ptype	county	floor_area	floor_report	year	star_score	eui_site	eui_source	weather_site	weather_source	direct_ghg	indirect_ghg	total_ghg	water_use	id	parent_id	parent_name	bbl	bin	borough	num_build				
+pname	ptype	county	floor_area	floor_report	year	star_score	eui_site	eui_source'	weather_site	weather_source	direct_ghg	indirect_ghg	total_ghg	water_use	id	parent_id	parent_name	bbl	bin	borough	num_build				
 201/205	Office	New York	289356	762051	1963		305.6	619.4	303.1	614.2	0	6962.2	6962.2		13286	13286	201/205	1013160001	1037549	Manhattan	2			Property Name	pname
 NYP Columbia (West Campus)	Hospital (General Medical & Surgical)	New York	3693539	3889181	1969	55	229.8	404.3	228.8	401.1	51016.4	4854.1	55870.4		28400	28400	NYP Columbia (West Campus)	1021380040	1084198;1084387;1084385;1084386;1084388;1084389;1807867;1809824	Manhattan	12			Property Type	ptype
 MSCHoNY North	Hospital (General Medical & Surgical)	New York	152765	231342	1924						0	0	0		4778226	28400	NYP Columbia (West Campus)	1021380030	1063380	Manhattan	1			County	county
