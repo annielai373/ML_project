@@ -28,7 +28,7 @@ ___
         + Build & deploy web application on Heroku.
 
 
-# Topics
+# Suggested Topics
 ___
 + Predicting A Song’s Commercial Success Based on Lyrics and Other Metrics.
     + http://cs229.stanford.edu/proj2014/Angela%20Xue,%20Nick%20Dupoux,%20Predicting%20the%20Commercial%20Success%20of%20Songs%20Based%20on%20Lyrics%20and%20Other%20Metrics.pdf
@@ -57,4 +57,48 @@ ___
     + http://cs229.stanford.edu/projects.html
 + UCI
     + https://archive.ics.uci.edu/ml/index.php
+
+
+# Topic 
+___
++ **Topic:** Energy Efficiency and Customer Care
++ **Reasons:**
+    + Save Money.
+    + Save The Planet.
+    + Be a Good Citizen.
+    + What are you waiting for?
+
++ **Ideias:**
+    + Compare energy consume across different classes (buildings/houses/target).
+
+    + Which equipments are responsible by energy consumption.
+
+    + Knowing the best metrics we can notify customers.
+
+    + Monetary advantages for the customers.
+
+    + Company running out of capacity (more money).
+
+    + Energy consume dashboard
+        + Peak days
+        + When to use it
+        + When don't use it
+        + How everybody else is doing
+
+    + Cluster consumers in order to understand the consumers categories.
+        + Targeting consumers groups with energy efficiency programs.
+        + EE saving forecast.        
+
+    + Energy consume by seasons.
+                
+
+
++ **Product:**
+    + Consume Dashboard
+    + Target consumers
+
+        
+
+
+
 
