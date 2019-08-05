@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <!--<link rel="stylesheet" href="../static/css/styles.css">-->
+
+    <title>Machine Learning Dashboard</title>
+</head>
+
+<body class="bg-light">    
+
+    <!-- Navigation Bar --> 
+    <nav class="navbar navbar-expand-md navbar-dark bd-navbar fixed-top">
+        <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <span class="menu-icon-brand fa fa-envira"></span>
+                    <span class="navbar-brand mb-0 h1">Green Planet</span>
+                    <br>
+                    <span class="menu-icon-brand-copyright">Data Science making the world a better place</span>
+                </li>
+            </ul>
+        </div>
+    
+        <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="#" data-toggle="modal" data-target="#aboutModal">
+                        <span class="menu-icons fa fa-users"></span> About
+                    </a>
+                </li>    
+            </ul>
+        </div>
+    </nav>
+
+    <h4 style="padding-top: 80px"> WorldWide Energy</h1>
+    <hr>
+
+    <!-- Main Container -->
+    <div class="container-fluid" >
+        <div id="carouselArima" class="carousel slide" data-ride="carousel" data-interval="false">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <!-- ARIMA 1 -->
+                    <div class="row" id="arima_continent">
+                        <div class="col-4">
+                            <div class="input-group input-group-sm">
+                                <div class="input-group-prepend">
+                                    <label class="input-group-text" for="selectContinental">Continental</label>
+                                </div>
+    
+                                <select class="custom-select" id="selectContinental">
+                                </select>
+                            </div>
+                        </div>
+    
+                        <div class="col-4">
+                            <div class="input-group input-group-sm">
+                                <div class="input-group-prepend">
+                                    <label class="input-group-text" for="selectModel">Model</label>
+                                </div>
+    
+                                <select class="custom-select" id="selectModel">
+                                    <option value="cec" selected>Consumption</option>
+                                    <option value="cep">Production</option>
+                                </select>
+                            </div>
+                        </div>
+    
+                        <div class="col-4">
+                            <div class="input-group input-group-sm">
+                                <div class="input-group-prepend">
+                                    <label class="input-group-text" for="selectPeriod">Period</label>
+                                </div>
+    
+                                <select class="custom-select" id="selectPeriod">
+                                    <option value="1">1 Year</option>
+                                    <option value="2">2 Years</option>
+                                    <option value="3">3 Years</option>
+                                    <option value="4">4 Years</option>
+                                    <option value="5">5 Years</option>
+                                    <option value="10" selected>10 Years</option>
+                                </select>
+                            </div>
+                        </div>
+    
+                        <div class="row" style="padding-top: 20px">
+                            <div class="col">
+                                <div id="view1_plot"></div>
+                            </div>
+                        </div>
+                    </div>
+    
+                </div>
+                <div class="carousel-item">
+                    <h1> Item 2 </h1>
+                </div>
+                <div class="carousel-item">
+                    <h1> Item 3 </h1>
+                </div>
+            </div>
+            <a class="carousel-control-prev" href="#carouselArima" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselArima" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+                  
+
+            <!-- Regression -->
+    </div>  
+        
+
+
+
+
+
+    
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>   
+    
+    <script type="text/javascript" src="{{ url_for('static', filename='js/config.js') }}"> </script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/dashboard.js') }}"> </script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/index.js') }}"> </script>
+    
+    <!--
+    <script type="text/javascript" src="../static/js/config.js"></script>
+    <script type="text/javascript" src="../static/js/dashboard.js"></script>
+    <script type="text/javascript" src="../static/js/index.js"></script>    
+    -->
+
+</body>
+</html>
+

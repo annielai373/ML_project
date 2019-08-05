@@ -1,0 +1,2 @@
+const GOOGLE_API='AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY';
+const APP_BASEURL=' http://127.0.0.1:5000';
