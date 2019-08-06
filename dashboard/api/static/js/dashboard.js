@@ -1,3 +1,5 @@
+var plot;
+
 const defaultAnimation = {
     'startup': true,
     duration: 500,
@@ -53,7 +55,7 @@ function loadArima() {
         .catch(err => console.log(err));    
 }
 
-function plotView1(model, continent, period ) {
+function G_plotView1(model, continent, period ) {
     google.charts.load("current", {packages:['corechart', 'line']});
     google.charts.setOnLoadCallback(() => {
         loadData(APP_BASEURL.concat(`/${model}/get_actual_consumption/${continent}`))
@@ -103,11 +105,8 @@ function plotView1(model, continent, period ) {
                         animation: defaultAnimation
                     };
                   
-                    //var chart = new google.charts.Line(document.getElementById('view1_plot'));  
-                    //chart.draw(dataTable, google.charts.Line.convertOptions(options));
                     var chart = new google.visualization.LineChart(document.getElementById('view1_plot'))
                     chart.draw(dataTable, options);
-                    //chart.setSelection([{row: 5, column: 2}]);
                 })
                 .catch(err => console.log(err));            
 
@@ -116,6 +115,105 @@ function plotView1(model, continent, period ) {
     });
 }
 
+function plotView1(model, continent, period) {
+    
+    loadData(APP_BASEURL.concat(`/${model}/get_actual_consumption/${continent}`))
+        .then(data_real => {
+
+            let container = 'view1_plot';
+            let labels = [];
+            let r_data = [];            
+
+            data_real['result'].forEach(item => {
+                labels.push(item.x);
+                r_data.push(item.y);
+            });
+            
+            const last_real_year = labels[labels.length -1];
+
+            loadData(APP_BASEURL.concat(`/${model}/get_prediction/${continent}/${period}`))
+                .then(data_predict => {
+
+                    let p_data = [];
+                    let serie = document.querySelector('#selectModel');
+
+
+                    r_data.forEach(item => p_data.push(null));
+                    p_data[p_data.length -1] = r_data[r_data.length -1];                    
+                    
+                    data_predict['result'].forEach(item => {
+                        labels.push(item.x);
+                        p_data.push(item.y);
+                    });                            
+
+                    let canvas = document.querySelector(`#${container}`).getContext('2d');
+
+                    if (plot) plot.destroy();
+
+                    plot = new Chart( canvas, {
+                        type: 'line',                        
+                        data: {
+                            labels : labels,                            
+                            datasets: [{
+                                label : serie[serie.selectedIndex].text,
+                                backgroundColor: 'rgb(143, 165, 201)',
+                                fill: false,
+                                borderColor: 'rgb(143, 165, 201)',
+                                data: r_data
+                            },
+                            {
+                                label : 'Forecast',
+                                backgroundColor: 'rgb(255, 99, 132)',
+                                fill: false,
+                                borderColor: 'rgb(255, 99, 132)',
+                                data: p_data
+                            }]
+                        },
+                        options: {
+                            title: {
+                                display : true,
+                                text: 'Arima Forecast Model',
+                                fontSize: 16,
+                                fontStyle: 'bold',
+                                position: 'top'
+                            },
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            annotation: {
+                                annotations: [
+                                  {
+                                    type: "line",
+                                    mode: "vertical",
+                                    scaleID: "x-axis-0",
+                                    value: last_real_year,
+                                    borderColor: "black",
+                                    label: {
+                                      content: "forecast",
+                                      enabled: true,
+                                      position: "top"
+                                    }
+                                  }
+                                ]
+                            },
+                            scales : {
+                                yAxes : [{
+                                    scaleLabel: {
+                                        display : true,
+                                        labelString: 'British Thermal Unit(Btu)'
+                                    }
+                                }]
+                            }
+
+                        
+                        }
+                    });
+                })
+                .catch(err => console.log(err));
+            
+        } )
+        .catch(err => console.log(err));
+
+}
 
 $( document ).ready(() => {
     loadArima();
