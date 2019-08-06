@@ -1,4 +1,5 @@
 var plot;
+var plot2;
 
 const defaultAnimation = {
     'startup': true,
@@ -194,14 +195,6 @@ function plotView1(model, continent, period) {
                                     }
                                   }
                                 ]
-                            },
-                            scales : {
-                                yAxes : [{
-                                    scaleLabel: {
-                                        display : true,
-                                        labelString: 'British Thermal Unit(Btu)'
-                                    }
-                                }]
                             }
 
                         
@@ -215,8 +208,62 @@ function plotView1(model, continent, period) {
 
 }
 
+function plotBuilding() {
+    loadData(APP_BASEURL.concat("/building"))
+        .then(data => {
+            let container_id = "building_plot"
+
+            test_data = [];
+            predict_data = [];
+            xs = [];
+
+            data["result"].forEach(item => {
+                xs.push(item.x);
+                test_data.push(item.test);
+                predict_data.push(item.predict)
+            });
+
+            container = document.querySelector('#' + container_id).getContext('2d');
+            
+            if (plot2) plot2.destroy();
+
+            plot2 = new Chart(container, {
+                type: "line",
+                data: {
+                    labels : xs,
+                    datasets: [{
+                        label : "Test",
+                        backgroundColor: 'rgb(143, 165, 201)',
+                        fill: false,
+                        borderColor: 'rgb(143, 165, 201)',
+                        data: test_data
+                    },
+                    {
+                        label : 'Forecast',
+                        backgroundColor: 'rgb(255, 99, 132)',
+                        fill: false,
+                        borderColor: 'rgb(255, 99, 132)',
+                        data: predict_data
+                    }]
+                },
+                options: {
+                    title: {
+                        display : true,
+                        text: 'Buidlings',
+                        fontSize: 16,
+                        fontStyle: 'bold',
+                        position: 'top'
+                    },
+                    responsive: true,
+                    maintainAspectRatio: false 
+                }
+            });
+        })
+}
+
 $( document ).ready(() => {
     loadArima();
+    plotBuilding();
 });
 
 
