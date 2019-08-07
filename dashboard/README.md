@@ -16,3 +16,22 @@ In Continents dropdown menu, add "&": from "Central South America" to "Central &
 For all legends in the Continent[al], Economic Sector, and Gases tabs, update "Arima" to all caps "ARIMA".
 
 .... This is all I could find. ;) (Annie, @) 
+
+## Changes if possible (hs)
+
+1) I agree with Annie. Keep continent next to the continent drop down but change the tab to CONTINENTAL.
+
+2) Remove exponential smoothing from the CONSUMPTION & PRODUCTION graphs. 
+    - when deployed in Heroku it does NOT match what is in github. 
+    - Exponential smoothing appears in all the graphs in heroku.
+    
+3) Change the color of CONSUMPTION or PRODUCTION so they are not the same. 
+
+4) Make the units of Y the same for both the CONSUMPTION & PRODUCTION graphs. Go from 6 to 40 BTU?
+
+5) Change CONTINENT COMPARE to COMPARE TO.
+
+6) Can you make the bottom drop-down half the size?
+
+..... I think that's it. Thanks! hs
+
