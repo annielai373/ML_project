@@ -1,0 +1,14 @@
+Linear Regression
+1) place Train & Test info on ONE row --> shifted over to the right a little
+
+
+Random Forest
+1) use FR_withFloorPlan_weight to build a chart
+    * same for FR_NoFloorPlan_weight
+
+2) Create Train and Test objects as above with Linear Regression
+   * When FLOOR AREA is selected:
+        use FR_withFloorPlan_score
+
+   * When FLOOR AREA is NOT selected:
+	use FR_NoFloorPlan_score
