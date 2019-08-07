@@ -58,3 +58,7 @@ document.querySelector('#selectGasPeriod').addEventListener('change', (e) => {
 
     plotView3(period[period.selectedIndex].value);
 });
+
+document.querySelector("#buildingFloorAreaCheck").addEventListener('change', (e) => {
+    plotBuidlingLinearRegression(e.target.checked);
+});

@@ -128,7 +128,74 @@ function init() {
 
             plotView3(periodSector[periodSector.selectedIndex].value);
         })
-        .catch(err => console.log(err));    
+        .catch(err => console.log(err));
+
+    plotBuidlingLinearRegression();
+}
+
+function plotBuidlingLinearRegression(withFloorPlan) {
+    loadData(APP_BASEURL.concat(`/buildings/${(withFloorPlan?"floorarea":"nofloorarea")}`))
+        .then(data => {
+            test_data = [];
+            train_data = [];
+            xs = [];
+
+            i = 1;
+            data["result"].forEach(item => {
+                test_data.push(item.Real);
+                train_data.push(item.Predict);
+                xs.push(i++);
+            });
+
+            let canvas = document.querySelector("#linear_regression_plot").getContext("2d");
+
+            if (plot[8]) plot[8].destroy();
+
+            plot[8] = new Chart( canvas, {
+                type: 'line',                        
+                data: {
+                    labels : xs,                            
+                    datasets: [{
+                        label : 'Train',
+                        backgroundColor: 'rgb(0, 0, 255)',
+                        fill: false,
+                        borderColor: 'rgb(0, 0, 255)',
+                        data: train_data
+                    },{
+                        label : "Test",
+                        backgroundColor: 'rgb(255, 0, 0)',
+                        fill: false,
+                        borderColor: 'rgb(255, 0, 0)',
+                        data: test_data
+                    }
+                ]
+                },
+                options: {
+                    title: {
+                        display : true,
+                        text: "Linear Regression", // ": Complete" when Floor Area checked, ": Without Floor Area" when unchecked
+                        fontSize: 16,
+                        fontStyle: 'bold',
+                        position: 'top'
+                    },
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        xAxes: [{
+                            ticks: {
+                                display: false
+                            }
+                        }]
+                    }
+                }
+            })
+        });
+
+    loadData(APP_BASEURL.concat(`/buildings/${(withFloorPlan?"floorarea":"nofloorarea")}/score`))
+        .then(data => {
+            document.querySelector("#linear_regression_test_score").innerHTML = data["result"][0].Test;
+            document.querySelector("#linear_regression_train_score").innerHTML = data["result"][0].Train;
+        })
 }
 
 function plotView1(period, componentTrigger) {
