@@ -1,5 +1,16 @@
 var plot = [];
 
+const continentScales = {
+    'africa' : 40,
+    'asia_oceania' : 300,
+    'central_south_america' : 40,
+    'eurasia' : 85,
+    'europe' : 90,
+    'middle_east' : 120,
+    'north_america' : 140,
+    'world' : 700
+};
+
 const defaultAnimation = {
     'startup': true,
     duration: 500,
@@ -53,6 +64,10 @@ function init() {
                 continentCompare.value = item;
                 continentCompare.textContent = item.replace(/_/g,' ').capitalize();
 
+                // In Continents dropdown menu, add "&": from "Central South America" to "Central & South America".
+                // ugly code implementation...
+                if (continent.textContent === 'Central South America') continent.textContent = 'Central & South America';
+                if (continentCompare.textContent === 'Central South America') continentCompare.textContent = 'Central & South America';
 
                 selectContinental.appendChild(continent);
                 selectContinentalCompare.appendChild(continentCompare);
@@ -77,6 +92,12 @@ function init() {
 
                 sectorCompare.value = item;
                 sectorCompare.textContent = item.replace(/_/g,' ').capitalize();
+
+                // Annie change - In Sector dropdown menu, capitalize "S" in "Us Territories".
+                // ugly code implementation...
+                if (sector.textContent === 'Us Territories') sector.textContent = 'US Territories';
+                if (sectorCompare.textContent === 'Us Territories') sectorCompare.textContent = 'US Territories';
+
 
                 sectors.appendChild(sector);
                 sectorsCompare.appendChild(sectorCompare);
@@ -124,28 +145,38 @@ function plotView1(period, componentTrigger) {
                 description : 'Consumption',
                 container : 'view1_plot',
                 index: 0,
-                continent: selectContinental[selectContinental.selectedIndex].value            
+                continent: selectContinental[selectContinental.selectedIndex].value,
+                color: 'rgb(111, 150, 137)',
+                y:0
+
             },
             {
                 code : 'cep',
                 description : 'Production',
                 container : 'view2_plot',
                 index: 1,
-                continent: selectContinental[selectContinental.selectedIndex].value
+                continent: selectContinental[selectContinental.selectedIndex].value,
+                color: 'rgb(143, 165, 201)',
+                y:0
+
             },
             {
                 code : 'cec',
                 description : 'Consumption',
                 container : 'view3_plot',
                 index: 2,
-                continent: selectContinentalCompare[selectContinentalCompare.selectedIndex].value            
+                continent: selectContinentalCompare[selectContinentalCompare.selectedIndex].value,
+                color: 'rgb(111, 150, 137)',
+                y:0
             },
             {
                 code : 'cep',
                 description : 'Production',
                 container : 'view4_plot',
                 index: 3,
-                continent: selectContinentalCompare[selectContinentalCompare.selectedIndex].value
+                continent: selectContinentalCompare[selectContinentalCompare.selectedIndex].value,
+                color: 'rgb(143, 165, 201)',
+                y:0
             }
         ];
     } else if ( componentTrigger === 'selectContinental') {
@@ -155,14 +186,18 @@ function plotView1(period, componentTrigger) {
                 description : 'Consumption',
                 container : 'view1_plot',
                 index: 0,
-                continent: selectContinental[selectContinental.selectedIndex].value            
+                continent: selectContinental[selectContinental.selectedIndex].value,
+                color: 'rgb(111, 150, 137)',
+                y:0
             },
             {
                 code : 'cep',
                 description : 'Production',
                 container : 'view2_plot',
                 index: 1,
-                continent: selectContinental[selectContinental.selectedIndex].value
+                continent: selectContinental[selectContinental.selectedIndex].value,
+                color: 'rgb(143, 165, 201)',
+                y:0
             }
         ];
     } else if ( componentTrigger === 'selectContinentalCompare') {
@@ -172,19 +207,23 @@ function plotView1(period, componentTrigger) {
                 description : 'Consumption',
                 container : 'view3_plot',
                 index: 2,
-                continent: selectContinentalCompare[selectContinentalCompare.selectedIndex].value            
+                continent: selectContinentalCompare[selectContinentalCompare.selectedIndex].value,
+                color: 'rgb(111, 150, 137)',
+                y:0
             },
             {
                 code : 'cep',
                 description : 'Production',
                 container : 'view4_plot',
                 index: 3,
-                continent: selectContinentalCompare[selectContinentalCompare.selectedIndex].value
+                continent: selectContinentalCompare[selectContinentalCompare.selectedIndex].value,
+                color: 'rgb(143, 165, 201)',
+                y:0
             }
         ];
     }
 
-    models.forEach(model => {
+    models.forEach((model) => {
         loadData(APP_BASEURL.concat(`/${model.code}/get_actual_consumption/${model.continent}`))
         .then(data_real => {
 
@@ -196,7 +235,7 @@ function plotView1(period, componentTrigger) {
                 labels.push(item.x);
                 r_data.push(item.y);
             });
-            
+
             const last_real_year = labels[labels.length -1];
 
             loadData(APP_BASEURL.concat(`/${model.code}/get_prediction/${model.continent}/${period}/arima`))
@@ -236,13 +275,13 @@ function plotView1(period, componentTrigger) {
                             labels : labels,                            
                             datasets: [{
                                 label : model.description,
-                                backgroundColor: 'rgb(143, 165, 201)',
+                                backgroundColor: model.color,
                                 fill: false,
-                                borderColor: 'rgb(143, 165, 201)',
+                                borderColor: model.color,
                                 data: r_data
                             },
                             {
-                                label : 'Arima',
+                                label : 'ARIMA',
                                 backgroundColor: 'rgb(255, 99, 132)',
                                 fill: false,
                                 borderColor: 'rgb(255, 99, 132)',
@@ -287,7 +326,10 @@ function plotView1(period, componentTrigger) {
                                 yAxes : [{
                                     scaleLabel: {
                                         display : true,
-                                        labelString: 'British Thermal Unit(Btu)'
+                                        labelString: 'British termal unit (Btu)'                                        
+                                    },
+                                    ticks : {
+                                        max: continentScales[model.continent]
                                     }
                                 }]
                             }
@@ -369,7 +411,7 @@ function plotView2(period, componentTrigger) {
             
             const last_real_year = labels[labels.length -1];
 
-            loadData(APP_BASEURL.concat(`/${model.code}/get_prediction/${model.sector}/${period}/arima`))
+            loadData(APP_BASEURL.concat(`/${model.code}/get_prediction/${model.sector}/${period}`))
                 .then(data_predict => {
 
                     let p_data = [];
@@ -412,19 +454,19 @@ function plotView2(period, componentTrigger) {
                                 data: r_data
                             },
                             {
-                                label : 'Arima',
+                                label : 'ARIMA',
                                 backgroundColor: 'rgb(255, 99, 132)',
                                 fill: false,
                                 borderColor: 'rgb(255, 99, 132)',
                                 data: p_data
-                            }/*,
+                            },
                             {
                                 label : 'Exponential smoothing',
                                 backgroundColor: 'rgb(75, 192, 192)',
                                 fill: false,
                                 borderColor: 'rgb(75, 192, 192)',
                                 data: e_data
-                            },*/
+                            },
                         ]
                         },
                         options: {
@@ -457,7 +499,7 @@ function plotView2(period, componentTrigger) {
                                 yAxes : [{
                                     scaleLabel: {
                                         display : true,
-                                        labelString: 'British Thermal Unit(Btu)'
+                                        labelString: 'British termal unit (Btu)'
                                     }
                                 }]
                             }
@@ -539,7 +581,7 @@ function plotView3(period, componentTrigger) {
             
             const last_real_year = labels[labels.length -1];
 
-            loadData(APP_BASEURL.concat(`/${model.code}/get_prediction/${model.sector}/${period}/arima`))
+            loadData(APP_BASEURL.concat(`/${model.code}/get_prediction/${model.sector}/${period}`))
                 .then(data_predict => {
 
                     let p_data = [];
@@ -582,19 +624,19 @@ function plotView3(period, componentTrigger) {
                                 data: r_data
                             },
                             {
-                                label : 'Arima',
+                                label : 'ARIMA',
                                 backgroundColor: 'rgb(255, 99, 132)',
                                 fill: false,
                                 borderColor: 'rgb(255, 99, 132)',
                                 data: p_data
-                            }/*,
+                            },
                             {
                                 label : 'Exponential smoothing',
                                 backgroundColor: 'rgb(75, 192, 192)',
                                 fill: false,
                                 borderColor: 'rgb(75, 192, 192)',
                                 data: e_data
-                            },*/
+                            },
                         ]
                         },
                         options: {
@@ -627,7 +669,7 @@ function plotView3(period, componentTrigger) {
                                 yAxes : [{
                                     scaleLabel: {
                                         display : true,
-                                        labelString: 'British Thermal Unit(Btu)'
+                                        labelString: 'British termal unit (Btu)'
                                     }
                                 }]
                             }
