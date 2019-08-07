@@ -35,3 +35,33 @@ For all legends in the Continent[al], Economic Sector, and Gases tabs, update "A
 
 ..... I think that's it. Thanks! hs
 
+## Additional changes
+1) Remove ALL exponential smoothing
+
+2) Greenhouse Gas TAB
+   * Change color line to Exponential smoothing color
+   * Spelling error: COMPATE --> "COMPARE TO"
+   
+3) Period label for dropdowns in ALL 3 tabs
+    *  change to "Forecast Period"
+    
+4) Continential tab shoud NOT be in all caps. I did that to point it out. sorry!
+
+5) Citation for NYC page- just like you did for the EPA
+   DATA SOURCE: Office of Renewable Efficiency & Renewable Energy 
+   (https://www.energy.gov/eere/buildings/appliance-and-equipment-standards-program)
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
