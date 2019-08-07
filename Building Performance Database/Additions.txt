@@ -16,3 +16,7 @@ Random Forest
 	use FR_NoFloorPlan_score
 
 
+     Features| Weights
+         x      1.92
+         x      1.92            Train @@@   Test ###
+         x      1.92
