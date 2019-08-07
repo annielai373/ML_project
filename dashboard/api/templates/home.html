@@ -58,7 +58,7 @@
             </li>
             <li class="nav-item">
                     <a class="nav-link" id="state-tab" data-toggle="tab" href="#state" role="tab" aria-controls="state"
-                        aria-selected="false">State</a>
+                        aria-selected="false">NYC</a>
             </li>    
         </ul>
         <div class="tab-content" id="myTabContent">
@@ -279,7 +279,43 @@
                 </div>
             </div>
 
-            <div class="tab-pane fade" id="state" role="tabpanel" aria-labelledby="state-tab">Flora's container</div>
+            <div class="tab-pane fade" id="state" role="tabpanel" aria-labelledby="state-tab">
+                <div class="row" style="padding-top: 15px">
+                    <div class="col">
+                        <div class="input-group input-group-sm">
+                            <div class="input-group-prepend">
+                                <label class="input-group-text" for="selectGas">Features</label>
+                            </div>
+                    
+                            <input class="checkbox-selector" type="checkbox" value="building_type" checked disabled>Building Type</input>
+                            <input class="checkbox-selector" type="checkbox" value="occupency" checked disabled>Occupency</input>
+                            <input class="checkbox-selector" type="checkbox" value="h2o" checked disabled>Water</input>
+                            <input class="checkbox-selector" type="checkbox" value="natural_gas" checked disabled>Natural Gas</input>
+                            <input class="checkbox-selector" type="checkbox" value="electricity" checked disabled>Electricity</input>
+                            <input class="checkbox-selector" type="checkbox" value="floor_area" id="buildingFloorAreaCheck">Floor Area</input>
+                        </div>
+                    </div>
+
+                    <div class="w-100"></div>
+
+                    <div class="col">
+                        <div class="chart-container_lg">
+                            <canvas id="linear_regression_plot"></canvas>
+                        </div>
+                        <div id="linear_regression_scores">
+                            <div class="input-group-prepend">
+                                <label style="background-color: blue; color: white" class="input-group-text" for="linear_regression_train_score">Train</label>
+                            </div>
+                            <span id="linear_regression_train_score"></span>
+                            <div class="input-group-prepend">
+                                <label style="background-color: red; color: white" class="input-group-text" for="linear_regression_test_score">Test</label>
+                            </div>
+                            <span id="linear_regression_test_score"></span>
+                        </div>
+                    </div>    
+
+                </div>
+            </div>
         </div>
         </ul>
 
