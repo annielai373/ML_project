@@ -1,17 +1,17 @@
 Features,Weight
-Entertainment,1.95E-06
-Facility,3.87E-05
-Food Service,1.11E-07
-General Medical,9.22E-06
-Hotel,0.001186547
-Multifamily,7.08E-05
-Office,1.27E-05
-Other,2.05E-06
-Parking,2.74E-05
-Retail,2.28E-06
-Total floor area,0.01101828
-Build Year,0.000267834
-Occupancy,3.04E-06
-Natural gas,0.844852992
-Electricty,0.142115308
-Water Use,0.000390834
+Entertainment,1.95  e-06
+Facility,3.87  e-05
+Food Service,1.11  e-07
+General Medical,9.22  e-06
+Hotel,1.19  e-03
+Multifamily,7.08  e-05
+Office,1.27  e-05
+Other,2.05  e-06
+Parking,2.74  e-05
+Retail,2.28  e-06
+Total floor area,1.10  e-02
+Build Year,2.68  e-04
+Occupancy,3.04  e-06
+Natural gas,8.45  e-01
+Electricty,1.42  e-01
+Water Use,3.91  e-04

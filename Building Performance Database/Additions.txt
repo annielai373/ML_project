@@ -1,11 +1,13 @@
-Linear Regression
-1) place Train & Test info on ONE row --> shifted over to the right a little
+Linear Regression (Y= site EUI)
+1) place Train & Test Score on ONE row --> shifted over to the right a little
       Train 0.967       Test 0.352
 
 2) fix the graph so it adjusts with the window size
 
+3) Occupency --> "Occupancy"
+
 Random Forest
-1) use FR_withFloorPlan_weight to build a chart
+1) use FR_withFloorPlan_weight to build a table (2 decimals)
     * same for FR_NoFloorPlan_weight
 
 2) Create Train and Test objects as above with Linear Regression
@@ -14,6 +16,9 @@ Random Forest
 
    * When FLOOR AREA is NOT selected:
 	use FR_NoFloorPlan_score
+
+3) Keep colors the same for TEST & TRAIN #'s
+
 
 
      Features| Weights
