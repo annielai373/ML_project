@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-    <!--<link rel="stylesheet" href="../static/css/styles.css">-->
 
     <title>Machine Learning Dashboard</title>
 </head>
@@ -39,8 +38,7 @@
         </div>
     </nav>
 
-    <h4 style="padding-top: 80px"> WorldWide Energy</h1>
-    <hr>
+    <hr style="padding-top: 60px">
 
     <!-- Main Container -->
     <div class="container-fluid" >                         
@@ -48,46 +46,37 @@
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item">
                 <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
-                    aria-selected="true">Continental</a>
+                    aria-selected="true">Continent</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
-                    aria-selected="false">Economics</a>
+                    aria-selected="false">Economic Sector</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact"
                     aria-selected="false">Gases</a>
             </li>
+            <li class="nav-item">
+                    <a class="nav-link" id="state-tab" data-toggle="tab" href="#state" role="tab" aria-controls="state"
+                        aria-selected="false">State</a>
+            </li>    
         </ul>
         <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                 <!-- ARIMA 1 -->
-                <div class="row" id="arima_continent" style="padding-top: 15px">
-                    <div class="col-4">
+                <div class="row" style="padding-top: 15px">
+                    <div class="col">
                         <div class="input-group input-group-sm">
                             <div class="input-group-prepend">
-                                <label class="input-group-text" for="selectContinental">Continental</label>
+                                <label class="input-group-text" for="selectContinental">Continent</label>
                             </div>
             
                             <select class="custom-select" id="selectContinental">
-                            </select>
+                            </select>    
                         </div>
-                    </div>
+                    </div>            
             
-                    <div class="col-4">
-                        <div class="input-group input-group-sm">
-                            <div class="input-group-prepend">
-                                <label class="input-group-text" for="selectModel">Model</label>
-                            </div>
-            
-                            <select class="custom-select" id="selectModel">
-                                <option value="cec" selected>Consumption</option>
-                                <option value="cep">Production</option>
-                            </select>
-                        </div>
-                    </div>
-            
-                    <div class="col-4">
+                    <div class="col">
                         <div class="input-group input-group-sm">
                             <div class="input-group-prepend">
                                 <label class="input-group-text" for="selectPeriod">Period</label>
@@ -98,57 +87,236 @@
                                 <option value="2">2 Years</option>
                                 <option value="3">3 Years</option>
                                 <option value="4">4 Years</option>
-                                <option value="5">5 Years</option>
-                                <option value="10" selected>10 Years</option>
+                                <option value="5" selected>5 Years</option>
                             </select>
                         </div>
                     </div>
-            
-                    <div class="row" style="padding-top: 20px">
-                        <div class="col">                                
-                            <div class="chart-container">                                
-                                <canvas id="view1_plot"></canvas>
-                            </div>
+                    <div class="w-100"></div>
+
+                    <div class="col"> 
+                        <div class="chart-container">                                
+                            <canvas id="view1_plot"></canvas>
                         </div>
                     </div>
-                </div>            
+
+                    <div class="col">                                
+                        <div class="chart-container">                                
+                            <canvas id="view2_plot"></canvas>
+                        </div>
+                    </div>                    
+                </div>
+                
+                <div class="row" style="padding-top: 15px">
+                    <div class="col">
+                        <h6> Continent Compare</h6>
+                        <hr>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <div class="input-group input-group-sm">
+                            <div class="input-group-prepend">
+                                <label class="input-group-text" for="selectContinentalCompare">Continent</label>
+                            </div>
+                
+                            <select class="custom-select" id="selectContinentalCompare">
+                            </select>
+                        </div>
+                    </div>
+                
+                    <div class="w-100"></div>
+                
+                    <div class="col">
+                        <div class="chart-container">
+                            <canvas id="view3_plot"></canvas>
+                        </div>
+                    </div>
+                
+                    <div class="col">
+                        <div class="chart-container">
+                            <canvas id="view4_plot"></canvas>
+                        </div>
+                    </div>
+                </div>   
+                
             
             </div>
-            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">Content 2</div>
-            <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">Content 3</div>
+            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                <!-- ARIMA 2 -->
+                <div class="row" style="padding-top: 15px">
+                    <div class="col">
+                        <div class="input-group input-group-sm">
+                            <div class="input-group-prepend">
+                                <label class="input-group-text" for="selectSector">Sector</label>
+                            </div>
+                    
+                            <select class="custom-select" id="selectSector">
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="input-group input-group-sm">
+                            <div class="input-group-prepend">
+                                <label class="input-group-text" for="selectSectorPeriod">Period</label>
+                            </div>
+                    
+                            <select class="custom-select" id="selectSectorPeriod">
+                                <option value="1">1 Year</option>
+                                <option value="2">2 Years</option>
+                                <option value="3">3 Years</option>
+                                <option value="4">4 Years</option>
+                                <option value="5" selected>5 Years</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="w-100"></div>
+
+                    <div class="col">
+                        <div class="chart-container_lg">
+                            <canvas id="view5_plot"></canvas>
+                        </div>
+                    </div>    
+
+                </div>
+
+                <div class="row" style="padding-top: 15px">
+                    <div class="col">
+                        <h6> Sector Compare</h6>
+                        <hr>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <div class="input-group input-group-sm">
+                            <div class="input-group-prepend">
+                                <label class="input-group-text" for="selectSectorCompare">Sector</label>
+                            </div>
+                
+                            <select class="custom-select" id="selectSectorCompare">
+                            </select>
+                        </div>
+                    </div>
+                
+                    <div class="w-100"></div>
+                
+                    <div class="col">
+                        <div class="chart-container_lg">
+                            <canvas id="view6_plot"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                <!-- ARIMA 3 -->
+                <div class="row" style="padding-top: 15px">
+                    <div class="col">
+                        <div class="input-group input-group-sm">
+                            <div class="input-group-prepend">
+                                <label class="input-group-text" for="selectGas">Gas</label>
+                            </div>
+                    
+                            <select class="custom-select" id="selectGas">
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="input-group input-group-sm">
+                            <div class="input-group-prepend">
+                                <label class="input-group-text" for="selectGasPeriod">Period</label>
+                            </div>
+                    
+                            <select class="custom-select" id="selectGasPeriod">
+                                <option value="1">1 Year</option>
+                                <option value="2">2 Years</option>
+                                <option value="3">3 Years</option>
+                                <option value="4">4 Years</option>
+                                <option value="5" selected>5 Years</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="w-100"></div>
+
+                    <div class="col">
+                        <div class="chart-container_lg">
+                            <canvas id="view7_plot"></canvas>
+                        </div>
+                    </div>    
+
+                </div>
+
+                <div class="row" style="padding-top: 15px">
+                    <div class="col">
+                        <h6> Gas Compare</h6>
+                        <hr>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <div class="input-group input-group-sm">
+                            <div class="input-group-prepend">
+                                <label class="input-group-text" for="selectGasCompare">Gas</label>
+                            </div>
+                
+                            <select class="custom-select" id="selectGasCompare">
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="w-100"></div>
+                    
+                    <div class="col">
+                        <div class="chart-container_lg">
+                            <canvas id="view8_plot"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="state" role="tabpanel" aria-labelledby="state-tab">Flora's container</div>
         </div>
         </ul>
-        
-        <h4 style="padding-top: 40px">Comercial Energy</h1>
-            <div class="chart-container">
-                <canvas id="building_plot"></canvas>
+
+        <!-- About Modal -->
+        <div class="modal fade bd-example-modal-lg" id="aboutModal" tabindex="-1" role="dialog" aria-labelledby="aboutModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="aboutModalLabel">Group Members</h5>
+                </div>
+                <div class="modal-body">
+                    <p class="text-center font-weight-normal">Alexandre Geraldo</p>
+                    <p class="text-center font-weight-normal">Annie Lai</p>
+                    <p class="text-center font-weight-normal">Flora Ruan</p>
+                    <p class="text-center font-weight-normal">Hi Shin Shim</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
             </div>
-        <hr>
+            </div>
+        </div>            
+        
     </div>  
         
-
-
-
-
 
     
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-annotation/0.5.7/chartjs-plugin-annotation.js"></script>
     
     
     <script type="text/javascript" src="{{ url_for('static', filename='js/config.js') }}"> </script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/dashboard.js') }}"> </script>
-    <script type="text/javascript" src="{{ url_for('static', filename='js/index.js') }}"> </script>
-    
-    <!--
-    <script type="text/javascript" src="../static/js/config.js"></script>
-    <script type="text/javascript" src="../static/js/dashboard.js"></script>
-    <script type="text/javascript" src="../static/js/index.js"></script>    
-    -->
+    <script type="text/javascript" src="{{ url_for('static', filename='js/index.js') }}"> </script>    
 
 </body>
 </html>

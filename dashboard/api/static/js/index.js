@@ -1,26 +1,60 @@
 
 document.querySelector('#selectContinental').addEventListener('change', (e) => {
-    let model = document.querySelector('#selectModel');
     let period = document.querySelector('#selectPeriod');
 
-    plotView1(model[model.selectedIndex].value, e.target[e.target.selectedIndex].value, period[period.selectedIndex].value);
+    plotView1(period[period.selectedIndex].value, e.target.id);
 });
 
-document.querySelector('#selectModel').addEventListener('change', (e) => {
-    
-    let continental = document.querySelector('#selectContinental');
-    let model = e.target;
-    let period = document.querySelector('#selectPeriod');
-    
 
-    plotView1(model[model.selectedIndex].value, continental[continental.selectedIndex].value, period[period.selectedIndex].value);
+document.querySelector('#selectContinentalCompare').addEventListener('change', (e) => {
+    let period = document.querySelector('#selectPeriod');
+
+    plotView1(period[period.selectedIndex].value, e.target.id);
 });
 
 document.querySelector('#selectPeriod').addEventListener('change', (e) => {
     
-    let continental = document.querySelector('#selectContinental');
-    let model = document.querySelector('#selectModel');;
     let period = e.target;    
 
-    plotView1(model[model.selectedIndex].value, continental[continental.selectedIndex].value, period[period.selectedIndex].value);
+    plotView1(period[period.selectedIndex].value);
+});
+
+
+document.querySelector('#selectSector').addEventListener('change', (e) => {
+    let period = document.querySelector('#selectSectorPeriod');
+
+    plotView2(period[period.selectedIndex].value, e.target.id);
+});
+
+document.querySelector('#selectSectorCompare').addEventListener('change', (e) => {
+    let period = document.querySelector('#selectSectorPeriod');
+
+    plotView2(period[period.selectedIndex].value, e.target.id);
+});
+
+document.querySelector('#selectSectorPeriod').addEventListener('change', (e) => {
+    
+    let period = e.target;    
+
+    plotView2(period[period.selectedIndex].value);
+});
+
+
+document.querySelector('#selectGas').addEventListener('change', (e) => {
+    let period = document.querySelector('#selectGasPeriod');
+
+    plotView3(period[period.selectedIndex].value, e.target.id);
+});
+
+document.querySelector('#selectGasCompare').addEventListener('change', (e) => {
+    let period = document.querySelector('#selectGasPeriod');
+
+    plotView3(period[period.selectedIndex].value, e.target.id);
+});
+
+document.querySelector('#selectGasPeriod').addEventListener('change', (e) => {
+    
+    let period = e.target;    
+
+    plotView3(period[period.selectedIndex].value);
 });

@@ -34,27 +34,46 @@ class ContinentalEnergyProductionModel(db.Model):
              return []
      
      @classmethod
-     def get_prediction(cls, continent, n_periods):    
+     def get_prediction(cls, continent, n_periods, model):    
+        model_list = []
 
-        result = []
+        if not model:
+            model_list.append('arima')
+            model_list.append('exponential')
 
-        try:
-            last_year = ContinentalEnergyProductionModel.query.with_entities(db.func.max(ContinentalEnergyProductionModel.year)).scalar()            
-            model_location = ML_REPOSITORY + ContinentalEnergyProductionModel.__tablename__ + '/' + continent + '.pkl'
-            
-            model = pickle.load(open(model_location, 'rb'))
-            predictions = model.predict(n_periods=n_periods)
+        else:
+            model_list.append(model)
 
-            for item in list(predictions):
-                last_year = last_year + 1                
+        try:            
+            model_result = []            
 
-                result.append({
-                    'x' : last_year,
-                    'y' : item
-                })
+            for template in model_list:                
+                result = []  
+                last_year = ContinentalEnergyProductionModel.query.with_entities(db.func.max(ContinentalEnergyProductionModel.year)).scalar()                                          
+                model_location = ML_REPOSITORY + ContinentalEnergyProductionModel.__tablename__ + '/' + template + '/' + continent + '.pkl'
+                
+                model = pickle.load(open(model_location, 'rb'))
 
-            return result
+                if template == 'arima':
+                    predictions = model.predict(n_periods=n_periods)
 
-        except:
+                elif template == 'exponential':
+                    predictions = model.forecast(steps=n_periods)
+
+                for item in list(predictions):
+                    last_year = last_year + 1                
+
+                    result.append({
+                        'x' : last_year,
+                        'y' : item
+                    })
+
+                model_result.append({template : result})                
+
+            return model_result
+
+        except Exception as e:
+            print (e)
             return []         
+
 

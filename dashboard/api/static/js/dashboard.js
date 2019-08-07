@@ -1,5 +1,4 @@
-var plot;
-var plot2;
+var plot = [];
 
 const defaultAnimation = {
     'startup': true,
@@ -30,98 +29,166 @@ const loadData = async (endpoint) => {
     return await response.json();
 }
 
-function loadArima() {
+function init() {
     String.prototype.capitalize = function() {
         return this.replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
     };
     
-    let model = document.querySelector('#selectModel');
+    let model = 'cec';
     let period = document.querySelector('#selectPeriod');
+    let periodSector = document.querySelector('#selectSectorPeriod');
 
-    loadData(APP_BASEURL.concat(`/${model[model.selectedIndex].value}/get_continents`))
+    loadData(APP_BASEURL.concat(`/${model}/get_continents`))
         .then(data => {
             let selectContinental = document.querySelector('#selectContinental');
+            let selectContinentalCompare = document.querySelector('#selectContinentalCompare');
 
             data['result'].forEach(item => {
                 let continent = document.createElement('option');
+                let continentCompare = document.createElement('option');
 
                 continent.value = item;
                 continent.textContent = item.replace(/_/g,' ').capitalize();
+                
+                continentCompare.value = item;
+                continentCompare.textContent = item.replace(/_/g,' ').capitalize();
+
 
                 selectContinental.appendChild(continent);
+                selectContinentalCompare.appendChild(continentCompare);
             });
 
-            plotView1(model[model.selectedIndex].value, selectContinental[selectContinental.selectedIndex].value, period[period.selectedIndex].value);
+            plotView1(period[period.selectedIndex].value);            
+
+        })
+        .catch(err => console.log(err));    
+
+    loadData(APP_BASEURL.concat('/emmissions/get_sectors'))
+        .then(data => {
+            let sectors = document.querySelector('#selectSector');
+            let sectorsCompare = document.querySelector('#selectSectorCompare');
+
+            data['result'].forEach(item => {
+                let sector = document.createElement('option');
+                let sectorCompare = document.createElement('option');
+
+                sector.value = item;
+                sector.textContent = item.replace(/_/g,' ').capitalize();
+
+                sectorCompare.value = item;
+                sectorCompare.textContent = item.replace(/_/g,' ').capitalize();
+
+                sectors.appendChild(sector);
+                sectorsCompare.appendChild(sectorCompare);
+            });
+
+            plotView2(periodSector[periodSector.selectedIndex].value);
+        })
+        .catch(err => console.log(err));
+
+    loadData(APP_BASEURL.concat('/gases/get_gases'))
+        .then(data => {
+            let gases = document.querySelector('#selectGas');
+            let gasesCompare = document.querySelector('#selectGasCompare');
+
+            data['result'].forEach(item => {
+                let gas = document.createElement('option');
+                let gasCompare = document.createElement('option');
+
+                gas.value = item;
+                gas.textContent = item.replace(/_/g,' ').capitalize();
+
+                gasCompare.value = item;
+                gasCompare.textContent = item.replace(/_/g,' ').capitalize();
+
+                gases.appendChild(gas);
+                gasesCompare.appendChild(gasCompare);
+            });
+
+            plotView3(periodSector[periodSector.selectedIndex].value);
         })
         .catch(err => console.log(err));    
 }
 
-function G_plotView1(model, continent, period ) {
-    google.charts.load("current", {packages:['corechart', 'line']});
-    google.charts.setOnLoadCallback(() => {
-        loadData(APP_BASEURL.concat(`/${model}/get_actual_consumption/${continent}`))
-        .then(data_real => {
+function plotView1(period, componentTrigger) {
 
-            let dataTable = new google.visualization.DataTable();
-            dataTable.addColumn('number', 'Year');
-            dataTable.addColumn('number', 'Consumption');
-            dataTable.addColumn('number', 'Prediction');
-            dataTable.addColumn({type: 'string', role: 'annotation'})
+    let models = [];
 
-            data_real['result'].forEach(item => dataTable.addRow([item.x, item.y, null, null]));
-
-            loadData(APP_BASEURL.concat(`/${model}/get_prediction/${continent}/${period}`))
-                .then(data_predict => {
-                    data_predict['result'].forEach(item => dataTable.addRow([item.x, null, item.y, null]));
-
-                    let options = {
-                        title : 'Arima Forecast Model',
-                        titleTextStyle: { bold: true},
-                        hAxis: {
-                            title: 'Year',
-                            format : ' ',
-                            titleTextStyle: { bold: true }                            
-                        },
-                        legend : {
-                            position: 'none'
-                        },
-                        vAxis: {
-                            title: 'British Thermal Unit(Btu)',
-                            titleTextStyle: { bold: true},
-                            format: 'decimal'                            
-                        },
-                        crosshair: {
-                            color: '#000',
-                            trigger: 'focus'
-                        },
-                        annotations: {
-                            style: 'line',
-                            position: 'top'
-                        },        
-                        height:defaultDimensions.height,
-                        width:defaultDimensions.width,                
-                        backgroundColor: { 
-                            fill:'transparent' 
-                        },
-                        animation: defaultAnimation
-                    };
-                  
-                    var chart = new google.visualization.LineChart(document.getElementById('view1_plot'))
-                    chart.draw(dataTable, options);
-                })
-                .catch(err => console.log(err));            
-
-        })
-        .catch(err => console.log(err));   
-    });
-}
-
-function plotView1(model, continent, period) {
+    let selectContinental = document.querySelector('#selectContinental');
+    let selectContinentalCompare = document.querySelector('#selectContinentalCompare');
     
-    loadData(APP_BASEURL.concat(`/${model}/get_actual_consumption/${continent}`))
+    if (componentTrigger === undefined) {
+        models = [
+            {
+                code : 'cec',
+                description : 'Consumption',
+                container : 'view1_plot',
+                index: 0,
+                continent: selectContinental[selectContinental.selectedIndex].value            
+            },
+            {
+                code : 'cep',
+                description : 'Production',
+                container : 'view2_plot',
+                index: 1,
+                continent: selectContinental[selectContinental.selectedIndex].value
+            },
+            {
+                code : 'cec',
+                description : 'Consumption',
+                container : 'view3_plot',
+                index: 2,
+                continent: selectContinentalCompare[selectContinentalCompare.selectedIndex].value            
+            },
+            {
+                code : 'cep',
+                description : 'Production',
+                container : 'view4_plot',
+                index: 3,
+                continent: selectContinentalCompare[selectContinentalCompare.selectedIndex].value
+            }
+        ];
+    } else if ( componentTrigger === 'selectContinental') {
+        models = [
+            {
+                code : 'cec',
+                description : 'Consumption',
+                container : 'view1_plot',
+                index: 0,
+                continent: selectContinental[selectContinental.selectedIndex].value            
+            },
+            {
+                code : 'cep',
+                description : 'Production',
+                container : 'view2_plot',
+                index: 1,
+                continent: selectContinental[selectContinental.selectedIndex].value
+            }
+        ];
+    } else if ( componentTrigger === 'selectContinentalCompare') {
+        models = [
+            {
+                code : 'cec',
+                description : 'Consumption',
+                container : 'view3_plot',
+                index: 2,
+                continent: selectContinentalCompare[selectContinentalCompare.selectedIndex].value            
+            },
+            {
+                code : 'cep',
+                description : 'Production',
+                container : 'view4_plot',
+                index: 3,
+                continent: selectContinentalCompare[selectContinentalCompare.selectedIndex].value
+            }
+        ];
+    }
+
+    models.forEach(model => {
+        loadData(APP_BASEURL.concat(`/${model.code}/get_actual_consumption/${model.continent}`))
         .then(data_real => {
 
-            let container = 'view1_plot';
+            let container = model.container;
             let labels = [];
             let r_data = [];            
 
@@ -132,48 +199,68 @@ function plotView1(model, continent, period) {
             
             const last_real_year = labels[labels.length -1];
 
-            loadData(APP_BASEURL.concat(`/${model}/get_prediction/${continent}/${period}`))
+            loadData(APP_BASEURL.concat(`/${model.code}/get_prediction/${model.continent}/${period}/arima`))
                 .then(data_predict => {
 
                     let p_data = [];
-                    let serie = document.querySelector('#selectModel');
+                    let e_data = []
 
+                    data_predict['result'].forEach(models => {
+                        if (models.hasOwnProperty('arima')) {
+                            r_data.forEach(item => p_data.push(null));
+                            p_data[p_data.length -1] = r_data[r_data.length -1];                    
+                            
+                            models['arima'].forEach(item => {
+                                if (!labels.includes(item.x)) labels.push(item.x);
+                                p_data.push(item.y);
+                            });
 
-                    r_data.forEach(item => p_data.push(null));
-                    p_data[p_data.length -1] = r_data[r_data.length -1];                    
-                    
-                    data_predict['result'].forEach(item => {
-                        labels.push(item.x);
-                        p_data.push(item.y);
-                    });                            
+                        } else if (models.hasOwnProperty('exponential')) {
+                            r_data.forEach(item => e_data.push(null));
+                            e_data[e_data.length -1] = r_data[r_data.length -1];                    
+                            
+                            models['exponential'].forEach(item => {
+                                if (!labels.includes(item.x)) labels.push(item.x);
+                                e_data.push(item.y);
+                            });
+                        }
+                    });
 
                     let canvas = document.querySelector(`#${container}`).getContext('2d');
 
-                    if (plot) plot.destroy();
+                    if (plot[model.index]) plot[model.index].destroy();
 
-                    plot = new Chart( canvas, {
+                    plot[model.index] = new Chart( canvas, {
                         type: 'line',                        
                         data: {
                             labels : labels,                            
                             datasets: [{
-                                label : serie[serie.selectedIndex].text,
+                                label : model.description,
                                 backgroundColor: 'rgb(143, 165, 201)',
                                 fill: false,
                                 borderColor: 'rgb(143, 165, 201)',
                                 data: r_data
                             },
                             {
-                                label : 'Forecast',
+                                label : 'Arima',
                                 backgroundColor: 'rgb(255, 99, 132)',
                                 fill: false,
                                 borderColor: 'rgb(255, 99, 132)',
                                 data: p_data
-                            }]
+                            }/*,
+                            {
+                                label : 'Exponential smoothing',
+                                backgroundColor: 'rgb(75, 192, 192)',
+                                fill: false,
+                                borderColor: 'rgb(75, 192, 192)',
+                                data: e_data
+                            },*/
+                        ]
                         },
                         options: {
                             title: {
                                 display : true,
-                                text: 'Arima Forecast Model',
+                                text: model.description,
                                 fontSize: 16,
                                 fontStyle: 'bold',
                                 position: 'top'
@@ -195,6 +282,14 @@ function plotView1(model, continent, period) {
                                     }
                                   }
                                 ]
+                            },
+                            scales : {
+                                yAxes : [{
+                                    scaleLabel: {
+                                        display : true,
+                                        labelString: 'British Thermal Unit(Btu)'
+                                    }
+                                }]
                             }
 
                         
@@ -206,64 +301,354 @@ function plotView1(model, continent, period) {
         } )
         .catch(err => console.log(err));
 
+
+    });
+
 }
 
-function plotBuilding() {
-    loadData(APP_BASEURL.concat("/building"))
-        .then(data => {
-            let container_id = "building_plot"
+function plotView2(period, componentTrigger) {
 
-            test_data = [];
-            predict_data = [];
-            xs = [];
+    let models = [];
 
-            data["result"].forEach(item => {
-                xs.push(item.x);
-                test_data.push(item.test);
-                predict_data.push(item.predict)
+    let selectSector = document.querySelector('#selectSector');
+    let selectSectorCompare = document.querySelector('#selectSectorCompare');
+
+    if (componentTrigger === undefined) {
+        models = [
+            {
+                description: 'Emissions',
+                code: 'emmissions',
+                container : 'view5_plot',
+                index: 4,
+                sector: selectSector[selectSector.selectedIndex].value            
+            },
+            {
+                description: 'Emissions',
+                code: 'emmissions',
+                container : 'view6_plot',
+                index: 5,
+                sector: selectSectorCompare[selectSectorCompare.selectedIndex].value            
+            }
+        ];
+
+    } else if ( componentTrigger === 'selectSector') {
+        models = [
+            {
+                description: 'Emissions',
+                code: 'emmissions',
+                container : 'view5_plot',
+                index: 4,
+                sector: selectSector[selectSector.selectedIndex].value            
+            }
+        ];
+
+    } else if (componentTrigger === 'selectSectorCompare') {
+        models = [
+            {
+                description: 'Emissions',
+                code: 'emmissions',
+                container : 'view6_plot',
+                index: 5,
+                sector: selectSectorCompare[selectSectorCompare.selectedIndex].value            
+            }
+        ];
+    }
+
+    models.forEach(model => {
+        loadData(APP_BASEURL.concat(`/${model.code}/get_actual_consumption/${model.sector}`))            
+        .then(data_real => {
+
+            let container = model.container;
+            let labels = [];
+            let r_data = [];            
+
+            data_real['result'].forEach(item => {
+                labels.push(item.x);
+                r_data.push(item.y);
             });
-
-            container = document.querySelector('#' + container_id).getContext('2d');
             
-            if (plot2) plot2.destroy();
+            const last_real_year = labels[labels.length -1];
 
-            plot2 = new Chart(container, {
-                type: "line",
-                data: {
-                    labels : xs,
-                    datasets: [{
-                        label : "Test",
-                        backgroundColor: 'rgb(143, 165, 201)',
-                        fill: false,
-                        borderColor: 'rgb(143, 165, 201)',
-                        data: test_data
-                    },
-                    {
-                        label : 'Forecast',
-                        backgroundColor: 'rgb(255, 99, 132)',
-                        fill: false,
-                        borderColor: 'rgb(255, 99, 132)',
-                        data: predict_data
-                    }]
-                },
-                options: {
-                    title: {
-                        display : true,
-                        text: 'Buidlings',
-                        fontSize: 16,
-                        fontStyle: 'bold',
-                        position: 'top'
-                    },
-                    responsive: true,
-                    maintainAspectRatio: false 
-                }
-            });
-        })
+            loadData(APP_BASEURL.concat(`/${model.code}/get_prediction/${model.sector}/${period}/arima`))
+                .then(data_predict => {
+
+                    let p_data = [];
+                    let e_data = []
+
+                    data_predict['result'].forEach(models => {
+                        if (models.hasOwnProperty('arima')) {
+                            r_data.forEach(item => p_data.push(null));
+                            p_data[p_data.length -1] = r_data[r_data.length -1];                    
+                            
+                            models['arima'].forEach(item => {
+                                if (!labels.includes(item.x)) labels.push(item.x);
+                                p_data.push(item.y);
+                            });
+
+                        } else if (models.hasOwnProperty('exponential')) {
+                            r_data.forEach(item => e_data.push(null));
+                            e_data[e_data.length -1] = r_data[r_data.length -1];                    
+                            
+                            models['exponential'].forEach(item => {
+                                if (!labels.includes(item.x)) labels.push(item.x);
+                                e_data.push(item.y);
+                            });
+                        }
+                    });
+
+                    let canvas = document.querySelector(`#${container}`).getContext('2d');
+
+                    if (plot[model.index]) plot[model.index].destroy();
+
+                    plot[model.index] = new Chart( canvas, {
+                        type: 'line',                        
+                        data: {
+                            labels : labels,                            
+                            datasets: [{
+                                label : model.description,
+                                backgroundColor: 'rgb(143, 165, 201)',
+                                fill: false,
+                                borderColor: 'rgb(143, 165, 201)',
+                                data: r_data
+                            },
+                            {
+                                label : 'Arima',
+                                backgroundColor: 'rgb(255, 99, 132)',
+                                fill: false,
+                                borderColor: 'rgb(255, 99, 132)',
+                                data: p_data
+                            }/*,
+                            {
+                                label : 'Exponential smoothing',
+                                backgroundColor: 'rgb(75, 192, 192)',
+                                fill: false,
+                                borderColor: 'rgb(75, 192, 192)',
+                                data: e_data
+                            },*/
+                        ]
+                        },
+                        options: {
+                            title: {
+                                display : true,
+                                text: model.description,
+                                fontSize: 16,
+                                fontStyle: 'bold',
+                                position: 'top'
+                            },
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            annotation: {
+                                annotations: [
+                                  {
+                                    type: "line",
+                                    mode: "vertical",
+                                    scaleID: "x-axis-0",
+                                    value: last_real_year,
+                                    borderColor: "black",
+                                    label: {
+                                      content: "forecast",
+                                      enabled: true,
+                                      position: "top"
+                                    }
+                                  }
+                                ]
+                            },
+                            scales : {
+                                yAxes : [{
+                                    scaleLabel: {
+                                        display : true,
+                                        labelString: 'British Thermal Unit(Btu)'
+                                    }
+                                }]
+                            }
+
+                        
+                        }
+                    });
+                })
+                .catch(err => console.log(err));
+            
+        } )
+        .catch(err => console.log(err));
+
+
+    });
+
 }
+
+function plotView3(period, componentTrigger) {
+
+    let models = [];
+
+    let gasSector = document.querySelector('#selectGas');
+    let gasSectorCompare = document.querySelector('#selectGasCompare');
+
+    if (componentTrigger === undefined) {
+        models = [
+            {
+                description: 'Emissions',
+                code: 'gases',
+                container : 'view7_plot',
+                index: 6,
+                sector: gasSector[gasSector.selectedIndex].value            
+            },
+            {
+                description: 'Emissions',
+                code: 'gases',
+                container : 'view8_plot',
+                index: 7,
+                sector: gasSectorCompare[gasSectorCompare.selectedIndex].value            
+            }
+        ];
+
+    } else if ( componentTrigger === 'selectGas') {
+        models = [
+            {
+                description: 'Emissions',
+                code: 'gases',
+                container : 'view7_plot',
+                index: 6,
+                sector: selectGas[selectGas.selectedIndex].value            
+            }
+        ];
+
+    } else if (componentTrigger === 'selectGasCompare') {
+        models = [
+            {
+                description: 'Emissions',
+                code: 'gases',
+                container : 'view8_plot',
+                index: 7,
+                sector: selectGasCompare[selectGasCompare.selectedIndex].value            
+            }
+        ];
+    }
+
+    models.forEach(model => {
+        loadData(APP_BASEURL.concat(`/${model.code}/get_actual_consumption/${model.sector}`))            
+        .then(data_real => {
+
+            let container = model.container;
+            let labels = [];
+            let r_data = [];            
+
+            data_real['result'].forEach(item => {
+                labels.push(item.x);
+                r_data.push(item.y);
+            });
+            
+            const last_real_year = labels[labels.length -1];
+
+            loadData(APP_BASEURL.concat(`/${model.code}/get_prediction/${model.sector}/${period}/arima`))
+                .then(data_predict => {
+
+                    let p_data = [];
+                    let e_data = []
+
+                    data_predict['result'].forEach(models => {
+                        if (models.hasOwnProperty('arima')) {
+                            r_data.forEach(item => p_data.push(null));
+                            p_data[p_data.length -1] = r_data[r_data.length -1];                    
+                            
+                            models['arima'].forEach(item => {
+                                if (!labels.includes(item.x)) labels.push(item.x);
+                                p_data.push(item.y);
+                            });
+
+                        } else if (models.hasOwnProperty('exponential')) {
+                            r_data.forEach(item => e_data.push(null));
+                            e_data[e_data.length -1] = r_data[r_data.length -1];                    
+                            
+                            models['exponential'].forEach(item => {
+                                if (!labels.includes(item.x)) labels.push(item.x);
+                                e_data.push(item.y);
+                            });
+                        }
+                    });
+
+                    let canvas = document.querySelector(`#${container}`).getContext('2d');
+
+                    if (plot[model.index]) plot[model.index].destroy();
+
+                    plot[model.index] = new Chart( canvas, {
+                        type: 'line',                        
+                        data: {
+                            labels : labels,                            
+                            datasets: [{
+                                label : model.description,
+                                backgroundColor: 'rgb(143, 165, 201)',
+                                fill: false,
+                                borderColor: 'rgb(143, 165, 201)',
+                                data: r_data
+                            },
+                            {
+                                label : 'Arima',
+                                backgroundColor: 'rgb(255, 99, 132)',
+                                fill: false,
+                                borderColor: 'rgb(255, 99, 132)',
+                                data: p_data
+                            }/*,
+                            {
+                                label : 'Exponential smoothing',
+                                backgroundColor: 'rgb(75, 192, 192)',
+                                fill: false,
+                                borderColor: 'rgb(75, 192, 192)',
+                                data: e_data
+                            },*/
+                        ]
+                        },
+                        options: {
+                            title: {
+                                display : true,
+                                text: model.description,
+                                fontSize: 16,
+                                fontStyle: 'bold',
+                                position: 'top'
+                            },
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            annotation: {
+                                annotations: [
+                                  {
+                                    type: "line",
+                                    mode: "vertical",
+                                    scaleID: "x-axis-0",
+                                    value: last_real_year,
+                                    borderColor: "black",
+                                    label: {
+                                      content: "forecast",
+                                      enabled: true,
+                                      position: "top"
+                                    }
+                                  }
+                                ]
+                            },
+                            scales : {
+                                yAxes : [{
+                                    scaleLabel: {
+                                        display : true,
+                                        labelString: 'British Thermal Unit(Btu)'
+                                    }
+                                }]
+                            }
+
+                        
+                        }
+                    });
+                })
+                .catch(err => console.log(err));
+            
+        } )
+        .catch(err => console.log(err));
+
+
+    });
+
+}
+
 
 $( document ).ready(() => {
-    loadArima();
-    plotBuilding();
+    init();
 });
 
 

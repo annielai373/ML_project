@@ -2,7 +2,7 @@ from flask_restful import Resource
 from models.continental_energy_production import ContinentalEnergyProductionModel
 
 class ContinentalEnergyProduction(Resource):
-    def get(self, operation=None, continent=None, n_periods=None):
+    def get(self, operation=None, continent=None, n_periods=None, model=None):
 
         if operation:
             if operation == 'get_continents':
@@ -20,7 +20,7 @@ class ContinentalEnergyProduction(Resource):
             elif operation == 'get_prediction':
                 if continent:
                     if n_periods:
-                        return { 'result' : ContinentalEnergyProductionModel.get_prediction(continent, int(n_periods)) }
+                        return { 'result' : ContinentalEnergyProductionModel.get_prediction(continent, int(n_periods), model) }
 
                     else:
                         return { 'error' : 'missing n_periods parameter' }

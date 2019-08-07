@@ -83,6 +83,11 @@
 
 
 .chart-container {
-    width: 1510px;
+    width: 700px;
     height:300px
+}
+
+.chart-container_lg {
+  width: 1500px;
+  height:300px
 }
