@@ -51,7 +51,7 @@ Random Forest
 --- LINEAR REGRESSION
    b) Change the colors!! 
 
-   c) Change "Samples" to "
+   c) Change "Samples" to "N Graphing Options"
 
    d) Add "LINEAR REGRESSION: " in front of  "Y= site EUI"
 
