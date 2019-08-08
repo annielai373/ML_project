@@ -1,0 +1,1 @@
+const APP_BASEURL='https://energy-ml.herokuapp.com';
