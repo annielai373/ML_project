@@ -25,3 +25,47 @@ Random Forest
          x      1.92
          x      1.92            Train @@@   Test ###
          x      1.92
+
+
+
+
+
+
+************************************** NEW ITEMS ****************************
+
+1) CONTINENTAL tab
+   * The graphs need to have the same LOWER bound of 0 for ALL the graphs
+
+2) GREENHOUSE tab
+   * Change color of line to GREEN - or emoothing smoothing line that was removed
+
+3) CONTINENTAL, GREENHOUSE, & ECONOMIC SECTOR tabs
+   * Reduce the bottom drop down so it takes up 1 column
+   * Move the citations so they remain under graph- regradless of the screen size
+
+
+
+4) NYC tab
+   a) Move the citations so they remain under graph- regradless of the screen size
+
+--- LINEAR REGRESSION
+   b) Change the colors!! 
+
+   c) Change "Samples" to "
+
+   d) Add "LINEAR REGRESSION: " in front of  "Y= site EUI"
+
+   e) Reduce the Train & Test score boxes & center
+
+---- RANDOM FOREST
+   f) Capitalize to "RANDOM FOREST"
+      *Place on the same row as Train & Test score boxes
+
+   g) Make the Random Forest Train & Test score boxes look the same as the LR ones
+      *Yeah- we knew the scores did NOT channge!! 
+      *We've spent a LOT of time with the data...unlike someone (code-lover)!!
+
+   h) Under FEATURES of Random Forest, change the spelling to "Electricity"
+
+----- BOTH
+   i) Align the LR & Random Forest Train & Test score boxes so they can be easily seen together
